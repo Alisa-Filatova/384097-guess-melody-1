@@ -10,7 +10,11 @@ const init = () => {
   };
 
   ReactDOM.render(
-      <App gameTime={settings.gameTime} mistakesCount={settings.mistakesCount} />,
+      <App
+        gameTime={settings.gameTime}
+        mistakesCount={settings.mistakesCount}
+        onPlayButtonClick={() => {}}
+      />,
       document.querySelector(`.main`)
   );
 };
