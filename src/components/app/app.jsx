@@ -57,9 +57,9 @@ class App extends React.PureComponent {
             onAnswer={onAnswer}
           />
         );
-    }
 
-    return null;
+      default: return null;
+    }
   }
 }
 

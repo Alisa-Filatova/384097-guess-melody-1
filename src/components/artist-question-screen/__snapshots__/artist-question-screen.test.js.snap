@@ -21,7 +21,6 @@ exports[`ArtistQuestionScreen renders correctly 1`] = `
   <form
     className="game__artist"
     onChange={[MockFunction]}
-    onSubmit={[Function]}
   >
     <div
       className="artist"

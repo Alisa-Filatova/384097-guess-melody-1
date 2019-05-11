@@ -32,7 +32,6 @@ it(`When user answers genre question form is not sent`, () => {
   const form = genreQuestion.find(`form`);
   const formSendPrevention = jest.fn();
 
-  form.simulate(`change`);
   form.simulate(`submit`, {
     preventDefault: formSendPrevention,
   });

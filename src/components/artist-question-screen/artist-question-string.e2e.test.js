@@ -29,7 +29,7 @@ const mock = {
   },
 };
 
-it(`When user answers artist question form is not sent`, () => {
+it(`When user answers artist question handler calls`, () => {
   const {question} = mock;
   const onAnswer = jest.fn();
 
@@ -41,13 +41,7 @@ it(`When user answers artist question form is not sent`, () => {
   );
 
   const form = artistQuestion.find(`form`);
-  const formSendPrevention = jest.fn();
 
   form.simulate(`change`);
-  form.simulate(`submit`, {
-    preventDefault: formSendPrevention,
-  });
-
-  expect(formSendPrevention).toHaveBeenCalledTimes(1);
   expect(onAnswer).toHaveBeenCalledTimes(1);
 });

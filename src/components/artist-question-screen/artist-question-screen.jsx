@@ -18,9 +18,6 @@ const ArtistQuestionScreen = ({question, onAnswer}) => {
       <form
         className="game__artist"
         onChange={onAnswer}
-        onSubmit={(event) => {
-          event.preventDefault();
-        }}
       >
         {answers.map((answer, idx) => (
           <div className="artist" key={answer + idx}>
