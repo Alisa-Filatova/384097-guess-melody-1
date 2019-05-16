@@ -27,7 +27,6 @@ const mock = {
   },
 };
 
-
 describe(`GenreQuestionScreen`, () => {
   it(`renders correctly`, () => {
     const {question} = mock;
@@ -37,8 +36,11 @@ describe(`GenreQuestionScreen`, () => {
         <GenreQuestionScreen
           onAnswer={onAnswer}
           question={question}
-        />
-    ).toJSON();
+        />, {
+          createNodeMock: () => {
+            return {};
+          }
+        }).toJSON();
 
     expect(screen).toMatchSnapshot();
   });
