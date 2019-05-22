@@ -6,7 +6,7 @@ describe(`GameWrapper`, () => {
   it(`renders correctly`, () => {
     const wrapper = renderer
     .create(
-        <GameWrapper questionType="genre">
+        <GameWrapper questionType="genre" mistakesCount={3}>
           <div>Mock Node</div>
         </GameWrapper>
     ).toJSON();

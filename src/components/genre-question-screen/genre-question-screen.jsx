@@ -13,7 +13,7 @@ class GenreQuestionScreen extends React.PureComponent {
   }
 
   render() {
-    const {question, onAnswer} = this.props;
+    const {question, onAnswer, userAnswer, onChange} = this.props;
     const {answers, genre} = question;
 
     return (
@@ -37,11 +37,13 @@ class GenreQuestionScreen extends React.PureComponent {
               />
               <div className="game__answer">
                 <input
+                  checked={userAnswer[idx]}
                   className="game__input visually-hidden"
                   type="checkbox"
                   name="answer"
                   value={`answer-${idx}`}
                   id={`answer-${idx}`}
+                  onChange={() => onChange(idx)}
                 />
                 <label
                   className="game__check"
@@ -74,6 +76,8 @@ GenreQuestionScreen.propTypes = {
     genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
     type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
   }).isRequired,
+  onChange: PropTypes.func.isRequired,
+  userAnswer: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };
 
 export default GenreQuestionScreen;

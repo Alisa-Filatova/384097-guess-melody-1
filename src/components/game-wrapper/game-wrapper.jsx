@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MistakesBoard from '../mistakes-board/mistakes-board.jsx';
 
 const GameWrapper = (props) => {
-  const {children, questionType} = props;
+  const {children, questionType, mistakesCount} = props;
 
   return (
     <section className={`game game--${questionType}`}>
@@ -30,11 +31,7 @@ const GameWrapper = (props) => {
           <span className="timer__dots">:</span>
           <span className="timer__secs">00</span>
         </div>
-        <div className="game__mistakes">
-          {Array.from({length: 3}).map((item, idx) => (
-            <div key={idx + Math.random()} className="wrong" />
-          ))}
-        </div>
+        <MistakesBoard mistakesCount={mistakesCount} />
       </header>
       {children}
     </section>
@@ -44,6 +41,7 @@ const GameWrapper = (props) => {
 GameWrapper.propTypes = {
   children: PropTypes.node,
   questionType: PropTypes.string,
+  mistakesCount: PropTypes.number.isRequired,
 };
 
 export default GameWrapper;

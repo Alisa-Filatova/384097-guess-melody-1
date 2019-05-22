@@ -17,6 +17,12 @@ class ArtistQuestionScreen extends React.PureComponent {
     const {isPlaying} = this.state;
     const {answers, song} = question;
 
+    const handleAnswer = (event) => {
+      const chosenArtist = event.target.value;
+
+      onAnswer(chosenArtist);
+    };
+
     return (
       <section className="game__screen">
         <h2 className="game__title">Кто исполняет эту песню?</h2>
@@ -30,10 +36,10 @@ class ArtistQuestionScreen extends React.PureComponent {
 
         <form
           className="game__artist"
-          onChange={onAnswer}
+          onChange={handleAnswer}
         >
           {answers.map((answer, idx) => (
-            <div className="artist" key={answer + idx}>
+            <div className="artist" key={answer.artist}>
               <input
                 className="artist__input visually-hidden"
                 type="radio"
