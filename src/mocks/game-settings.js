@@ -1,4 +1,4 @@
 export default {
   gameTime: 7,
-  mistakesCount: 4,
+  maxMistakes: 4,
 };

@@ -9,12 +9,14 @@ class GenreQuestionScreen extends React.PureComponent {
 
     this.state = {
       activePlayer: -1,
+      answer: new Array(this.props.question.answers.length).fill(false),
     };
   }
 
   render() {
-    const {question, onAnswer, userAnswer, onChange} = this.props;
+    const {question, onAnswer} = this.props;
     const {answers, genre} = question;
+    const {activePlayer} = this.state;
 
     return (
       <section className="game__screen">
@@ -26,24 +28,23 @@ class GenreQuestionScreen extends React.PureComponent {
             onAnswer();
           }}
         >
-          {answers.map((answer, idx) => (
+          {answers.map(({src}, idx) => (
             <div className="track" key={`answer-${idx}`}>
               <AudioPlayer
-                src={answer.src}
-                isPlaying={idx === this.state.activePlayer}
+                src={src}
+                isPlaying={idx === activePlayer}
                 onPlayButtonClick={() => this.setState({
-                  activePlayer: this.state.activePlayer === idx ? -1 : idx
+                  activePlayer: activePlayer === idx ? -1 : idx
                 })}
               />
               <div className="game__answer">
                 <input
-                  checked={userAnswer[idx]}
                   className="game__input visually-hidden"
                   type="checkbox"
                   name="answer"
                   value={`answer-${idx}`}
                   id={`answer-${idx}`}
-                  onChange={() => onChange(idx)}
+                  onChange={() => this._onChangeCheckboxHandler(idx)}
                 />
                 <label
                   className="game__check"
@@ -64,6 +65,13 @@ class GenreQuestionScreen extends React.PureComponent {
       </section>
     );
   }
+
+  _onChangeCheckboxHandler(idx) {
+    const answer = [...this.state.answer];
+
+    answer[idx] = !answer[idx];
+    this.setState({answer});
+  }
 }
 
 GenreQuestionScreen.propTypes = {
@@ -76,8 +84,6 @@ GenreQuestionScreen.propTypes = {
     genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
     type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
   }).isRequired,
-  onChange: PropTypes.func.isRequired,
-  userAnswer: PropTypes.arrayOf(PropTypes.bool).isRequired,
 };
 
 export default GenreQuestionScreen;

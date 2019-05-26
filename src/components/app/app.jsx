@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {checkIsGameOver, ActionCreator} from '../../reducer';
+import {ActionCreator} from '../../reducer';
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen.jsx';
 import QuestionGenreScreen from '../genre-question-screen/genre-question-screen.jsx';
@@ -13,25 +13,29 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {questions, step, settings, onAnswer} = this.props;
+    const {questions, step, settings, onAnswer, mistakesCount} = this.props;
+    const question = questions[step];
+    const userAnswerHandler = (userAnswer) => {
+      onAnswer(question, userAnswer, mistakesCount, settings.maxMistakes);
+    };
 
-    checkIsGameOver(settings.mistakesCount, questions.length, step);
+    if (!question && step === questions.length) {
+      this.reset();
+    }
 
     return (
       <>
         {questions[step] ?
           <GameWrapper
             questionType={questions[step].type}
-            mistakesCount={settings.mistakesCount}
+            mistakesCount={mistakesCount}
           >
-            {this._getGameScreen(questions[step], (answer) =>
-              onAnswer(questions[step], answer)
-            )}
+            {this._getGameScreen(question, userAnswerHandler)}
           </GameWrapper>
           :
           <WelcomeScreen
             time={settings.gameTime}
-            mistakesCount={settings.mistakesCount}
+            maxMistakes={settings.maxMistakes}
             onPlayButtonClick={onAnswer}
           />
         }
@@ -46,8 +50,6 @@ class App extends React.PureComponent {
           <QuestionGenreScreen
             question={question}
             onAnswer={onAnswer}
-            userAnswer={onAnswer}
-            onChange={onAnswer}
           />
         );
 
@@ -70,27 +72,25 @@ App.propTypes = {
   onAnswer: PropTypes.func.isRequired,
   settings: PropTypes.shape({
     gameTime: PropTypes.number.isRequired,
-    mistakesCount: PropTypes.number.isRequired,
+    maxMistakes: PropTypes.number.isRequired,
   }).isRequired,
+  mistakesCount: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, state);
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAnswer: (question, userAnswer) => {
-      dispatch(ActionCreator.incrementStep());
-      dispatch(ActionCreator.incrementMistake(question, userAnswer));
-    },
-    checkGameStatus: (gameMistakes, numberOfQuestions, currentMistakes, currentStep) => {
-      if (checkIsGameOver(gameMistakes, numberOfQuestions, currentMistakes, currentStep)) {
-        dispatch(ActionCreator.resetGame());
-      }
-    },
-    resetGame: () => {
-      dispatch(ActionCreator.resetGame());
-    }
-  };
-};
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  step: state.step,
+  mistakesCount: state.mistakesCount,
+});
+
+
+const mapDispatchToProps = (dispatch) => ({
+  onPlayButtonClick: () => dispatch(ActionCreator.goToNextQuestion()),
+  onAnswer: (userAnswer, question, mistakesCount, maxMistakes) => {
+    dispatch(ActionCreator.goToNextQuestion());
+    dispatch(ActionCreator.checkUserAnswer(userAnswer, question, mistakesCount, maxMistakes));
+  },
+  reset: () => dispatch(ActionCreator.reset()),
+});
 
 export {App};
 export default connect(mapStateToProps, mapDispatchToProps)(App);

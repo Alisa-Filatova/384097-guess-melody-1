@@ -1,7 +1,7 @@
 import React from 'react';
 import {configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App from './app';
+import {App} from './app';
 
 configure({adapter: new Adapter()});
 
@@ -40,6 +40,7 @@ it(`On click on WelcomeScreen App switches to the first question`, () => {
         mistakesCount={0}
         gameTime={0}
         questions={questions}
+        onAnswer={jest.fn()}
       />
   );
 

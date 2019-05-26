@@ -3,22 +3,19 @@ import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import App from './components/app/app.jsx';
-import questions from './mocks/questions';
-import gameSettings from './mocks/game-settings';
 import {reducer} from './reducer';
+import questions from './mocks/questions';
+import settings from './mocks/game-settings';
 
-const init = (gameQuestions) => {
+const init = () => {
   const store = createStore(reducer);
 
   ReactDOM.render(
       <Provider store={store}>
-        <App
-          questions={gameQuestions}
-          settings={gameSettings}
-        />
+        <App questions={questions} settings={settings} />
       </Provider>,
       document.querySelector(`.main`)
   );
 };
 
-init(questions);
+init();
